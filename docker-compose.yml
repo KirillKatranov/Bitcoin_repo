@@ -1,0 +1,26 @@
+services:
+  btcn_web:
+    build:
+      context: .
+    image: web_btcn_image
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: unless-stopped
+    command: >
+      sh -c "python BTCN_price.py"
+
+
+
+  db:
+    image: timescale/timescaledb:latest-pg17
+    hostname: db
+    ports:
+      - "5632:5432"
+    restart: unless-stopped
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:
