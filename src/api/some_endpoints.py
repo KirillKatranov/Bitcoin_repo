@@ -1,4 +1,4 @@
-from fast import app
+from src.fast import app
 
 
 @app.get("/")
