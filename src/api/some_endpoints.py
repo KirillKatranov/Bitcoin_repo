@@ -1,6 +1,6 @@
-from src.fast import app
+from fast import app
 
 
-@app.get("/")
+@app.get("/asd")
 async def root():
     return {"message": "Hello World"}
