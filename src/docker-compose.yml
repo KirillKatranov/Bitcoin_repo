@@ -3,13 +3,16 @@ services:
     build:
       context: .
     image: web_btcn_image
+    ports:
+      - 8003:8000
     env_file:
       - .env
     depends_on:
       - db
     restart: unless-stopped
     command: >
-      sh -c "python BTCN_price.py"
+      sh -c "cd src && uvicorn fast:app --host 0.0.0.0 --port 8000"
+
 
 
 
