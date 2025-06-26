@@ -6,12 +6,11 @@ services:
     ports:
       - 8003:8000
     env_file:
-      - .env
+      - src.env
     depends_on:
       - db
     restart: unless-stopped
-    command: >
-      sh -c "cd src && uvicorn fast:app --host 0.0.0.0 --port 8000"
+    command: ["python", "BTCN_price.py"]
 
 
 
@@ -22,8 +21,12 @@ services:
     ports:
       - "5632:5432"
     restart: unless-stopped
+    env_file:
+     - db.env #При удалении контейнера чтобы дефольная бд постгресс заново инициализировалась
+     #Эти переменные (POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD) работают только при первом запуске, когда в каталоге данных (/var/lib/postgresql/data) ещё нет инициализированной базы.
     volumes:
       - pg_data:/var/lib/postgresql/data
+
 
 volumes:
   pg_data:
