@@ -10,11 +10,13 @@ services:
     depends_on:
       - db
     restart: unless-stopped
-    command: ["python", "BTCN_price.py"]
+    command: >
+      sh -c "python BTCN_price.py & uvicorn fast:app --host 0.0.0.0 --port 8000"
 
 
 
-
+#При удалении контейнера чтобы дефольная бд постгресс заново инициализировалась
+#Эти переменные (POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD) работают только при первом запуске, когда в каталоге данных (/var/lib/postgresql/data) ещё нет инициализированной базы.
   db:
     image: timescale/timescaledb:latest-pg17
     hostname: db
@@ -22,10 +24,10 @@ services:
       - "5632:5432"
     restart: unless-stopped
     env_file:
-     - db.env #При удалении контейнера чтобы дефольная бд постгресс заново инициализировалась
-     #Эти переменные (POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD) работают только при первом запуске, когда в каталоге данных (/var/lib/postgresql/data) ещё нет инициализированной базы.
+     - db.env 
     volumes:
-      - pg_data:/var/lib/postgresql/data
+     - pg_data:/var/lib/postgresql/data
+
 
 
 volumes:

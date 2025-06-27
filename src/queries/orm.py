@@ -2,7 +2,8 @@ import time
 from database import sync_engine, Base, session_factory
 from models import PriceOrm
 
-
+def if_need_create_tables():
+    Base.metadata.create_all(sync_engine)
 
 def create_tables():
     sync_engine.echo = True
